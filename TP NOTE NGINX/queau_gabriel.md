@@ -183,3 +183,39 @@ Cela va nous permettre de sécurisé le transfert des fichiers :
 > sudo apt-get install mysecureshell
 
 > sudo nano /etc/ssh/sftp_config
+
+### Système pas clès
+
+Pour finir on va cofigurer une connexion par clès que seulement moi possédera :
+
+    On commence par générer la clès
+
+> ssh-keygen -t rsa -b 4096
+
+ensuite on recherche la clé :
+
+> cat ~/.ssh/id_rsa.pub
+
+On rajoute le contenu sur notre user ssh :
+
+> mkdir -p ~/.ssh
+> nano ~/.ssh/authorized_keys
+
+Enfin on s'assure que les permission sont correcte
+
+> chmod 600 ~/.ssh/authorized_keys
+
+#### Configuration du ssh par clés
+
+On va modifier le fichier avec les perms :
+
+> sudo nano /etc/ssh/sshd_config
+
+On rajoute les lignes suivantes :
+
+> PasswordAuthentication no
+> PubkeyAuthentication yes
+
+Et il nous reste plus qu'à redemarrer le ssh :
+
+> sudo systemctl restart ssh
